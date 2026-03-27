@@ -1,17 +1,51 @@
-export const id = 360;
-export const ids = [360];
-export const modules = {
-
-/***/ 5360:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-
-var sharedIniFileLoader = __webpack_require__(4964);
-var propertyProvider = __webpack_require__(8857);
-var node_child_process = __webpack_require__(1421);
-var node_util = __webpack_require__(7975);
-var client = __webpack_require__(5152);
+import { exec } from 'node:child_process';
+import { promisify } from 'node:util';
+import { s as setCredentialFeature, C as CredentialsProviderError, j as getProfileName } from './index.js';
+import { e as externalDataInterceptor } from './externalDataInterceptor-BGZM1UTV.js';
+import { p as parseKnownFiles } from './parseKnownFiles-C_Hyb5uW.js';
+import 'os';
+import 'crypto';
+import 'fs';
+import 'path';
+import 'http';
+import 'https';
+import 'net';
+import 'tls';
+import 'events';
+import 'assert';
+import 'util';
+import 'node:assert';
+import 'node:net';
+import 'node:http';
+import 'node:stream';
+import 'node:buffer';
+import 'node:querystring';
+import 'node:events';
+import 'node:diagnostics_channel';
+import 'node:tls';
+import 'node:zlib';
+import 'node:perf_hooks';
+import 'node:util/types';
+import 'node:worker_threads';
+import 'node:url';
+import 'node:async_hooks';
+import 'node:console';
+import 'node:dns';
+import 'string_decoder';
+import 'child_process';
+import 'timers';
+import 'buffer';
+import 'node:fs';
+import 'stream';
+import 'node:fs/promises';
+import 'node:path';
+import 'cluster';
+import 'constants';
+import 'node:https';
+import 'node:os';
+import 'node:process';
+import './getSSOTokenFromFile-binktLIt.js';
+import 'fs/promises';
 
 const getValidatedProcessCredentials = (profileName, data, profiles) => {
     if (data.Version !== 1) {
@@ -39,7 +73,7 @@ const getValidatedProcessCredentials = (profileName, data, profiles) => {
         ...(data.CredentialScope && { credentialScope: data.CredentialScope }),
         ...(accountId && { accountId }),
     };
-    client.setCredentialFeature(credentials, "CREDENTIALS_PROCESS", "w");
+    setCredentialFeature(credentials, "CREDENTIALS_PROCESS", "w");
     return credentials;
 };
 
@@ -48,7 +82,7 @@ const resolveProcessCredentials = async (profileName, profiles, logger) => {
     if (profiles[profileName]) {
         const credentialProcess = profile["credential_process"];
         if (credentialProcess !== undefined) {
-            const execPromise = node_util.promisify(sharedIniFileLoader.externalDataInterceptor?.getTokenRecord?.().exec ?? node_child_process.exec);
+            const execPromise = promisify(externalDataInterceptor?.getTokenRecord?.().exec ?? exec);
             try {
                 const { stdout } = await execPromise(credentialProcess);
                 let data;
@@ -61,15 +95,15 @@ const resolveProcessCredentials = async (profileName, profiles, logger) => {
                 return getValidatedProcessCredentials(profileName, data, profiles);
             }
             catch (error) {
-                throw new propertyProvider.CredentialsProviderError(error.message, { logger });
+                throw new CredentialsProviderError(error.message, { logger });
             }
         }
         else {
-            throw new propertyProvider.CredentialsProviderError(`Profile ${profileName} did not contain credential_process.`, { logger });
+            throw new CredentialsProviderError(`Profile ${profileName} did not contain credential_process.`, { logger });
         }
     }
     else {
-        throw new propertyProvider.CredentialsProviderError(`Profile ${profileName} could not be found in shared credentials file.`, {
+        throw new CredentialsProviderError(`Profile ${profileName} could not be found in shared credentials file.`, {
             logger,
         });
     }
@@ -77,15 +111,11 @@ const resolveProcessCredentials = async (profileName, profiles, logger) => {
 
 const fromProcess = (init = {}) => async ({ callerClientConfig } = {}) => {
     init.logger?.debug("@aws-sdk/credential-provider-process - fromProcess");
-    const profiles = await sharedIniFileLoader.parseKnownFiles(init);
-    return resolveProcessCredentials(sharedIniFileLoader.getProfileName({
+    const profiles = await parseKnownFiles(init);
+    return resolveProcessCredentials(getProfileName({
         profile: init.profile ?? callerClientConfig?.profile,
     }), profiles, init.logger);
 };
 
-exports.fromProcess = fromProcess;
-
-
-/***/ })
-
-};
+export { fromProcess };
+//# sourceMappingURL=index-D5LMH9i1.js.map

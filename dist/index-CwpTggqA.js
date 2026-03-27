@@ -1,13 +1,46 @@
-export const id = 579;
-export const ids = [579];
-export const modules = {
-
-/***/ 6579:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-
-var utilUtf8 = __webpack_require__(1577);
+import { t as toUtf8, h as fromUtf8 } from './index.js';
+import 'os';
+import 'crypto';
+import 'fs';
+import 'path';
+import 'http';
+import 'https';
+import 'net';
+import 'tls';
+import 'events';
+import 'assert';
+import 'util';
+import 'node:assert';
+import 'node:net';
+import 'node:http';
+import 'node:stream';
+import 'node:buffer';
+import 'node:util';
+import 'node:querystring';
+import 'node:events';
+import 'node:diagnostics_channel';
+import 'node:tls';
+import 'node:zlib';
+import 'node:perf_hooks';
+import 'node:util/types';
+import 'node:worker_threads';
+import 'node:url';
+import 'node:async_hooks';
+import 'node:console';
+import 'node:dns';
+import 'string_decoder';
+import 'child_process';
+import 'timers';
+import 'buffer';
+import 'node:fs';
+import 'stream';
+import 'node:fs/promises';
+import 'node:path';
+import 'cluster';
+import 'constants';
+import 'node:https';
+import 'node:os';
+import 'node:process';
 
 class EventStreamSerde {
     marshaller;
@@ -105,7 +138,7 @@ class EventStreamSerde {
                                 out[name] = body;
                             }
                             else if (member.isStringSchema()) {
-                                out[name] = (this.serdeContext?.utf8Encoder ?? utilUtf8.toUtf8)(body);
+                                out[name] = (this.serdeContext?.utf8Encoder ?? toUtf8)(body);
                             }
                             else if (member.isStructSchema()) {
                                 out[name] = await this.deserializer.read(member, body);
@@ -252,7 +285,7 @@ class EventStreamSerde {
         }
         const messageSerialization = serializer.flush() ?? new Uint8Array();
         const body = typeof messageSerialization === "string"
-            ? (this.serdeContext?.utf8Decoder ?? utilUtf8.fromUtf8)(messageSerialization)
+            ? (this.serdeContext?.utf8Decoder ?? fromUtf8)(messageSerialization)
             : messageSerialization;
         return {
             body,
@@ -263,9 +296,5 @@ class EventStreamSerde {
     }
 }
 
-exports.EventStreamSerde = EventStreamSerde;
-
-
-/***/ })
-
-};
+export { EventStreamSerde };
+//# sourceMappingURL=index-CwpTggqA.js.map
