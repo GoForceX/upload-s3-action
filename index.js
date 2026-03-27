@@ -1,11 +1,12 @@
-const core = require('@actions/core');
-const S3 = require('aws-sdk/clients/s3');
-const fs = require('fs');
-const path = require('path');
-const shortid = require('shortid');
-const slash = require('slash').default;
-const klawSync = require('klaw-sync');
-const { lookup } = require('mime-types');
+import * as core from '@actions/core';
+import { Upload } from '@aws-sdk/lib-storage';
+import { S3 } from '@aws-sdk/client-s3';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+import shortid from 'shortid';
+import slash from 'slash';
+import klawSync from 'klaw-sync';
+import { lookup } from 'mime-types';
 
 const AWS_KEY_ID = core.getInput('aws_key_id', {
   required: true,
@@ -42,14 +43,20 @@ const paths = klawSync(SOURCE_DIR, {
 });
 
 function upload(params) {
-  return new Promise((resolve) => {
-    s3.upload(params, (err, data) => {
-      if (err) core.error(err);
+  return new Upload({
+    client: s3,
+    params,
+  })
+    .done()
+    .then((data) => {
       core.info(`uploaded - ${data.Key}`);
       core.info(`located - ${data.Location}`);
-      resolve(data.Location);
+      return data.Location;
+    })
+    .catch((err) => {
+      core.error(err);
+      throw err;
     });
-  });
 }
 
 function run() {
